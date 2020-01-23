@@ -47,3 +47,13 @@ How to arrange?
 * Preserving Invariants
   * Locking
   * Using types (concepts?)
+  
+Thoughts from Ben:
+* Clojure's "actor pattern" means you have to pass functions to mutate state (like lambda thing)
+* strings are a common source of things that could be more constrained by construction:
+  * GUIDs
+  * URLs
+  
+Also:
+* linting tools
+* sanitizers?
