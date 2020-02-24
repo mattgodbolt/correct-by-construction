@@ -163,3 +163,15 @@ public:
 [[nodiscard]]
 const vector&lt;Tx> transactions() const;
 </code></pre>
+
+
+---
+
+<pre><code class="cpp" data-trim>
+template&lt;typename F>
+auto visit(F func) {
+  unique_lock lock(mutex_);
+  return func(static_cast&lt;const Data &>(data));
+}
+const vector&lt;Tx> transactions() const;
+</code></pre>

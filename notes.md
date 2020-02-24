@@ -183,3 +183,7 @@ More thoughts:
 
 * jordan mentioned "call doX then doY" -> instead doX return object with only "doY"
   - "commit" mutation? (commit pattern above)
+  
+  
+CppCast with Hana on C++20 talked about deprecating, making `bool` param from `const char *` etc bad
+Maybe look into and show this?
