@@ -187,3 +187,5 @@ More thoughts:
   
 CppCast with Hana on C++20 talked about deprecating, making `bool` param from `const char *` etc bad
 Maybe look into and show this?
+
+### principal of least surprise
