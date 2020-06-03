@@ -189,3 +189,9 @@ CppCast with Hana on C++20 talked about deprecating, making `bool` param from `c
 Maybe look into and show this?
 
 ### principal of least surprise
+
+TODO
+
+...
+
+the "assert(false);" antipattern https://github.com/NREL/EnergyPlus/blob/develop/third_party/ObjexxFCL/src/ObjexxFCL/IOFlags.cc#L47-L67
