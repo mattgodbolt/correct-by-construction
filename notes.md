@@ -190,8 +190,45 @@ Maybe look into and show this?
 
 ### principal of least surprise
 
-TODO
-
 ...
 
 the "assert(false);" antipattern https://github.com/NREL/EnergyPlus/blob/develop/third_party/ObjexxFCL/src/ObjexxFCL/IOFlags.cc#L47-L67
+
+* maybe can use kids as "spanish inquisition" live gag?
+
+
+
+New list:
+* INTRO
+* Pontification
+  * Good code is like Lego
+  * Bad code should be hard to write
+  * API design can help that
+  * "if it compiles, it works" good to aim at
+  * Principal of least surprise (maybe?)
+    * minimise side effects (logging, printing, etc)
+  * Comments as a smell?
+* Strong value types
+  * motivating examples
+* Two phase construction? avoid? (set up for below)
+* Parameters
+  * Use strong types
+  * Avoid bools, same type twice
+  * Reduce number of params
+    * parameter holders?
+    * builders?
+* lock...unlock
+  * RAII
+  * pre/post conditions? 
+    * runUnderLock
+* references? pointers?
+  * using const ref
+    * keeping a ref...
+  * Using u_ptr and s_ptr or non_owning ptr etc
+* templatery
+  * static assert
+  * concepts?
+* Conclusion!
+  * One line recap for each?
+  * Thank you
+>>>>>>> Checking in previously hacked at notes
