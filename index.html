@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -26,7 +27,8 @@
             border-radius: 10px;
             padding: 15px !important;
         }
-        body > div > div.slides > section.stack.present > section.present {
+
+        body>div>div.slides>section.stack.present>section.present {
             background: #ddd;
             box-shadow: 10px 10px #888;
             border-radius: 10px;
@@ -178,48 +180,46 @@
         document.getElementsByTagName('head')[0].appendChild(link);
     </script>
 </head>
+
 <body>
-<div class="reveal">
-    <div class="slides">
-        <section>
-            <div class="white-bg">
-                <h3>Correct By Construction</h3>
-                <h4>APIs That Are Easy To Use<br>(And Hard To Misuse)</h4>
-                <h5>Matt Godbolt <a href="https://twitter.com/mattgodbolt">@mattgodbolt</a></h5>
-            </div>
-        </section>
-        <section data-markdown="intro.md"
-                 data-separator-vertical="^---\n" data-separator="---disabled---">
-        </section>
-        <section data-markdown="bank-example.md"
-                 data-separator-vertical="^---\n" data-separator="---disabled---">
-        </section>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <div class="white-bg">
+                    <h3>Correct By Construction</h3>
+                    <h4>APIs That Are Easy To Use<br>(And Hard To Misuse)</h4>
+                    <h5>Matt Godbolt <a href="https://twitter.com/mattgodbolt">@mattgodbolt</a></h5>
+                </div>
+            </section>
+            <section data-markdown="intro.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            </section>
+        </div>
     </div>
-</div>
 
-<script src="reveal.js/js/reveal.js"></script>
+    <script src="reveal.js/js/reveal.js"></script>
 
 
-<script>
-    Reveal.initialize({
-        history: true,
-        transition: 'fade',
-        slideNumber: true,
-        width: 1280,
-        height: 720,
-        markdown: {smartypants: true,},
-        dependencies: [
-            {src: 'reveal.js/plugin/markdown/marked.js'},
-            {src: 'reveal.js/plugin/markdown/markdown.js'},
-            {src: 'reveal.js/plugin/notes/notes.js', async: true},
-            // {src: 'codify.js', async: true},
-            {
-                src: 'reveal.js/plugin/highlight/highlight.js',
-                async: true,
-                callback: () => hljs.initHighlightingOnLoad()
-            }
-        ]
-    });
-</script>
+    <script>
+        Reveal.initialize({
+            history: true,
+            transition: 'fade',
+            slideNumber: true,
+            width: 1280,
+            height: 720,
+            markdown: { smartypants: true, },
+            dependencies: [
+                { src: 'reveal.js/plugin/markdown/marked.js' },
+                { src: 'reveal.js/plugin/markdown/markdown.js' },
+                { src: 'reveal.js/plugin/notes/notes.js', async: true },
+                // {src: 'codify.js', async: true},
+                {
+                    src: 'reveal.js/plugin/highlight/highlight.js',
+                    async: true,
+                    callback: () => hljs.initHighlightingOnLoad()
+                }
+            ]
+        });
+    </script>
 </body>
+
 </html>

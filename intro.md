@@ -1,19 +1,33 @@
-## C++ is powerful
+## Hello!
 
-* strong types
-* templates
-* RAII
-* OO design/inheritance/virtual methods
+* Games
+* C++ Tools
+* Finance
 
 ---
 
-## API design conundrum
+## Correct by construction?
+
+<span class="fragment">If it compiles, it's<span class="fragment" data-fragment-index="2"> (probably) </span>right</span>
+
+---
+
+## C++ has
+
+* Strong types
+* RAII
+* `const` & `constexpr`
+* Lambdas
 
 ---
 
 ## "But I don't make libraries"
 
 * amusing stuffz here? 
+
+---
+
+## Strong Types
 
 ---
 
