@@ -108,19 +108,19 @@ Quantity thisDoesntSeemRight(-100);  // Still compiles just fine
 ### Quantity
 
 
-<pre><code class="cpp" data-line-numbers= data-trim>
+<pre><code class="cpp" data-line-numbers data-trim>
 template&lt;typename T>
-constexpr explicit Quantity(T quantity) 
+explicit Quantity(T quantity) 
   : quantity_(quantity) {
-    static_assert(std::is_unsigned_v&lt;T>,
-                  "Please use only unsigned types");
+  static_assert(std::is_unsigned_v&lt;T>,
+                "Please use only unsigned types");
 }
 </code></pre>
 
 <pre class=fragment><code class="cpp" data-line-numbers data-trim>
 template&lt;typename T>
 requires std::is_unsigned_v&lt;T>
-constexpr explicit Quantity(T quantity)
+explicit Quantity(T quantity)
   : quantity_(quantity) {}
 </code></pre>
 
@@ -149,7 +149,7 @@ note: the expression 'is_unsigned_v<T> [with T = int]' evaluated to 'false'
 ### Quantity
 
 <pre><code class="cpp" data-line-numbers="1|2|3" data-trim>
-Quantity wouldBeNiceIfThisWorked(100);
+Quantity wouldBeNiceIfThisWorked(100);  // but fails to compile
 Quantity butWeHaveToDoThis(100u);
 Quantity whatAboutThis(static_cast&ltunsigned int>(atoi("123")));
 </code></pre>
@@ -166,6 +166,14 @@ static Quantity from(T quantity) {
   return Quantity(static_cast&lt;std::make_unsigned&lt;T>>(quantity));
 }
 </code></pre>
+<div class="fragment">or...
+<pre><code class="cpp" data-line-numbers data-trim>
+template&lt;typename T>
+static Quantity from(T quantity) {
+  return gsl::narrow&lt;decltype(quantity_)>(quantity);
+}
+</code></pre></div>
+
 
 ---
 
@@ -176,7 +184,7 @@ constexpr Quantity operator""_qty(unsigned long long value) {
   return Quantity::from(value);
 }
 
-/* assuming similar Price class... */
+// assuming similar Price class...
 constexpr Price operator""_dollars(unsigned long long value) {
   return Price::from_dollars(value);
 }
@@ -204,7 +212,7 @@ void buyMoreGoogleShares() {
 
 ### Finishing touches
 
-<pre><code class="cpp" data-line-numbers="|4" data-trim>
+<pre><code class="cpp" data-line-numbers="|1-3|8" data-trim>
 enum class BuyOrSell {
   Buy, Sell
 };
@@ -215,21 +223,6 @@ void buyMoreGoogleShares() {
     BuyOrSell::Buy, 
     50_qty, 
     975_dollars);
-}
-</code></pre>
-
----
-
-### Finishing touches
-
-<pre><code class="cpp" data-line-numbers="|1-3|7" data-trim>
-enum class BuyOrSell {
-  Buy,
-  Sell
-};
-
-void buyGoogle() {
-  sendOrder("GOOG", BuyOrSell::Buy, 100_qty, 1000_dollars);
 }
 </code></pre>
 

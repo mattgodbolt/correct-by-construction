@@ -7,8 +7,9 @@
 
     <title>Correct By Construction</title>
 
-    <link rel="stylesheet" href="reveal.js/css/reveal.css">
-    <link rel="stylesheet" href="reveal.js/css/theme/sky.css">
+    <link rel="stylesheet" href="reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="reveal.js/dist/theme/sky.css">
 
     <style>
         .reveal .slides section .fragment.highlight-current-code {
@@ -169,16 +170,7 @@
     </style>
 
     <!-- Theme used for syntax highlighting of code -->
-    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
-
-    <!-- Printing and PDF exports -->
-    <script>
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = window.location.search.match(/print-pdf/gi) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
-        document.getElementsByTagName('head')[0].appendChild(link);
-    </script>
+    <link rel="stylesheet" href="reveal.js/plugin/highlight/zenburn.css" id="highlight-theme">
 </head>
 
 <body>
@@ -204,8 +196,9 @@
         </div>
     </div>
 
-    <script src="reveal.js/js/reveal.js"></script>
-
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="reveal.js/plugin/highlight/highlight.js"></script>
 
     <script>
         Reveal.initialize({
@@ -214,18 +207,7 @@
             slideNumber: true,
             width: 1280,
             height: 720,
-            markdown: { smartypants: true, },
-            dependencies: [
-                { src: 'reveal.js/plugin/markdown/marked.js' },
-                { src: 'reveal.js/plugin/markdown/markdown.js' },
-                { src: 'reveal.js/plugin/notes/notes.js', async: true },
-                // {src: 'codify.js', async: true},
-                {
-                    src: 'reveal.js/plugin/highlight/highlight.js',
-                    async: true,
-                    callback: () => hljs.initHighlightingOnLoad()
-                }
-            ]
+            plugins: [RevealMarkdown, RevealHighlight]
         });
     </script>
 </body>
