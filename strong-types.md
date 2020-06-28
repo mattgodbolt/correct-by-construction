@@ -43,6 +43,7 @@ void sendOrder(const char *symbol,
 In function 'void expensiveMistake()':
 error: could not convert 'Price(1000.00)' from 'Price' to 'Quantity'
              Price(1000.0),
+             ^
 error: could not convert 'Quantity(100)' from 'Quantity' to 'Price'
              Quantity(100),
              ^
@@ -145,66 +146,101 @@ note: the expression 'is_unsigned_v<T> [with T = int]' evaluated to 'false'
 
 ---
 
-HERE <<<<>>>>
-```
-  static Quantity from_int(int quantity) {
-      if (quantity < 0) throw std::runtime_error("Invalid quantity");
-      return Quantity(static_cast<unsigned>(quantity));
-  }
-```
+### Quantity
+
+<pre><code class="cpp" data-line-numbers="1|2|3" data-trim>
+Quantity wouldBeNiceIfThisWorked(100);
+Quantity butWeHaveToDoThis(100u);
+Quantity whatAboutThis(static_cast&ltunsigned int>(atoi("123")));
+</code></pre>
 
 ---
 
-Then `Quantity(100u)` needs the `u`, which is cool and all but
+### Quantity
 
-```
-constexpr Quantity operator ""_qty(unsigned long long value) {
-    if (value > /*TODO*/) throw std::runtime_error("Quantity too large");
-    return Quantity(value);
+<pre><code class="cpp" data-line-numbers data-trim>
+template&lt;typename T>
+static Quantity from(T quantity) {
+  if (quantity &lt; 0 || quantity > Quantity::max())
+    throw std::runtime_error("Invalid quantity");
+  return Quantity(static_cast&lt;std::make_unsigned&lt;T>>(quantity));
+}
+</code></pre>
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers="1-3|5-8|10-12" data-trim>
+constexpr Quantity operator""_qty(unsigned long long value) {
+  return Quantity::from(value);
+}
+
+/* assuming similar Price class... */
+constexpr Price operator""_dollars(unsigned long long value) {
+  return Price::from_dollars(value);
 }
 
 void sellMyGoogleShares() {
-  sendOrder("GOOG", false, 100_qty, 1000);
+  sendOrder("GOOG", false, 100_qty, 1000_dollars);
 }
-```
-
-- also strong types fluent c++
+</code></pre>
 
 ---
 
-```
-void sendOrder(const char *symbol, bool buy, Quantity qty, Price price);
+### Finishing touches
 
-void buyGoogle() {
-    sendOrder("GOOG", false, 100_qty, 1000_dollars);
+<pre><code class="cpp" data-line-numbers="|4" data-trim>
+void buyMoreGoogleShares() {
+  sendOrder(
+    "GOOG",
+    false, 
+    50_qty, 
+    975_dollars);
 }
-```
+</code></pre>
 
-```
+---
+
+### Finishing touches
+
+<pre><code class="cpp" data-line-numbers="|4" data-trim>
 enum class BuyOrSell {
-    Buy,
-    Sell
+  Buy, Sell
+};
+
+void buyMoreGoogleShares() {
+  sendOrder(
+    "GOOG",
+    BuyOrSell::Buy, 
+    50_qty, 
+    975_dollars);
+}
+</code></pre>
+
+---
+
+### Finishing touches
+
+<pre><code class="cpp" data-line-numbers="|1-3|7" data-trim>
+enum class BuyOrSell {
+  Buy,
+  Sell
 };
 
 void buyGoogle() {
-    sendOrder("GOOG", BuyOrSell::Buy, 100_qty, 1000_dollars);
+  sendOrder("GOOG", BuyOrSell::Buy, 100_qty, 1000_dollars);
 }
-```
+</code></pre>
 
 ---
 
-## what about performance!?
+## What about performance!?
 
-```
-void buySomeGoogle(int qty, int dollars) {
-  sendOrder("GOOG", BuyOrSell::Sell, Quantity::from(qty),
-            Price::from_dollars(dollars));
-}
-```
-https://godbolt.org/z/jCiY2s
-
+[Let's see!](https://godbolt.org/z/Sn6k9-)
 
 ---
+
 ## Summary
 
 * Use strong types
@@ -213,3 +249,4 @@ https://godbolt.org/z/jCiY2s
 * Constrain at compile time
 * UDLs
 * Avoid naked `bool`s
+* _Very_ low overhead
