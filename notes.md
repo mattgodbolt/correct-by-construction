@@ -183,7 +183,9 @@ More thoughts:
 
 * jordan mentioned "call doX then doY" -> instead doX return object with only "doY"
   - "commit" mutation? (commit pattern above)
+  - this is the TypeRegistry/Scope thing?
   
+- auto and expensive copy construction.
   
 CppCast with Hana on C++20 talked about deprecating, making `bool` param from `const char *` etc bad
 Maybe look into and show this?
@@ -231,4 +233,7 @@ New list:
 * Conclusion!
   * One line recap for each?
   * Thank you
->>>>>>> Checking in previously hacked at notes
+
+
+- work in progress on price and quantity classes:
+  - https://godbolt.org/z/j56zuY
