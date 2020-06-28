@@ -18,10 +18,13 @@
 
 ## Toolbox
 
-* Strong types
-* RAII
-* `const` & `constexpr`
+* `const`
+* `constexpr`
+* Enumerations
 * Lambdas
+* RAII
+* Static code analysis
+* Strong types
 
 ---
 
@@ -35,13 +38,13 @@ void sendOrder(const char *symbol, bool buy, int qty, double price);
 
 ---
 
-<pre class="fragment"><code class="cpp" data-line-numbers="|1|3-5|6-8" data-trim>
+<pre><code class="cpp" data-line-numbers data-trim>
 void sellMyGoogleShares() {
   sendOrder("GOOG", false, 100, 1000.00);
 }
 </code></pre>
 
-<pre class="fragment"><code class="cpp" data-line-numbers="|1|3-5|6-8" data-trim>
+<pre class="fragment"><code class="cpp" data-line-numbers data-trim>
 void expensiveMistake() {
   sendOrder("GOOG", false, 1000.00, 100);
 }

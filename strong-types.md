@@ -1,53 +1,151 @@
----
-
 ## Strong (Tiny) Types
 
 Picture of an ant? Tiny Type
 
 ---
 
-## Better?
+### Better?
 
-class Price { /*...*/ };
-class Quantity { /*...*/ };
+<pre><code class="cpp" data-line-numbers="1-2|4-8|10-11" data-trim>
+using Price = double;
+using Quantity = int;
 
----
+void sendOrder(const char *symbol,
+               bool buy,
+               Quantity qty,
+               Price price);
 
-* show error messages
-```
-<source>: In function 'void expensiveMistake()':
-<source>:15:47: error: could not convert '1000' from 'int' to 'Quantity'
-   sendOrder("GOOG", false, 1000, Quantity(100));
-```
-
----
-
-
-## Signed/unsigned?
-
-* show that we might pass negative quantity
-* try and fix?
-```
-  template<typename T>
-  requires std::is_unsigned_v<T>
-  constexpr explicit Quantity(T quantity) : quantity_(quantity) {}
-```
+void expensiveMistake() {
+  sendOrder("GOOG", false, 
+            Price(1000.00), Quantity(100));
+}
+</code></pre>
 
 ---
 
+### Better!
 
-or
-```
-  template<typename T>
-  constexpr explicit Quantity(T quantity) : quantity_(quantity) {
-      static_assert(std::is_unsigned_v<T>, "Please use only unsigned types");
-  }
-```
-... and if you need signed support?
+<pre><code class="cpp" data-line-numbers data-trim>
+class Price {/*...*/};
+class Quantity {/*...*/};
+
+void sendOrder(const char *symbol,
+               bool buy,
+               Quantity qty,
+               Price price);
+</code></pre>
 
 ---
 
+### Better!
 
+```
+In function 'void expensiveMistake()':
+error: could not convert 'Price(1000.00)' from 'Price' to 'Quantity'
+             Price(1000.0),
+error: could not convert 'Quantity(100)' from 'Quantity' to 'Price'
+             Quantity(100),
+             ^
+```
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers="|2|5-6|8" data-trim>
+class Quantity {
+  int quantity_;
+
+public:
+  explicit Quantity(int quantity) 
+    : quantity_(quantity) {}
+
+  int value() const { return quantity_; }
+};
+</code></pre>
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers data-trim>
+Quantity oneHundred(100);
+</code></pre>
+
+<pre class=fragment><code class="cpp" data-line-numbers data-trim>
+Quantity thisDoesntSeemRight(-100);
+</code></pre>
+
+---
+
+### Quantity
+
+`int` -> `unsigned int`
+
+<pre><code class="cpp" data-line-numbers="|2|5-6|8" data-trim>
+class Quantity {
+  unsigned int quantity_;
+
+public:
+  explicit Quantity(unsigned int quantity) 
+    : quantity_(quantity) {}
+
+  unsigned int value() const { return quantity_; }
+};
+</code></pre>
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers data-trim>
+Quantity thisDoesntSeemRight(-100);  // Still compiles just fine
+</code></pre>
+
+---
+
+### Quantity
+
+
+<pre><code class="cpp" data-line-numbers= data-trim>
+template&lt;typename T>
+constexpr explicit Quantity(T quantity) 
+  : quantity_(quantity) {
+    static_assert(std::is_unsigned_v&lt;T>,
+                  "Please use only unsigned types");
+}
+</code></pre>
+
+<pre class=fragment><code class="cpp" data-line-numbers data-trim>
+template&lt;typename T>
+requires std::is_unsigned_v&lt;T>
+constexpr explicit Quantity(T quantity)
+  : quantity_(quantity) {}
+</code></pre>
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers data-trim>
+Quantity thisDoesntSeemRight(-100); 
+</code></pre>
+
+<pre class=fragment>
+error: no matching function for call to 'Quantity::Quantity(int)'
+      | Quantity thisDoesntSeemRight(-100);
+      |                                  ^
+note: candidate: 'constexpr Quantity::Quantity(T) [with T = int]'
+      | constexpr explicit Quantity(T quantity) : quantity_(quantity) {}
+      |                    ^~~~~~~~
+note: constraints not satisfied
+note: the expression 'is_unsigned_v<T> [with T = int]' evaluated to 'false'
+      | requires std::is_unsigned_v<T>
+</pre>
+
+---
+
+HERE <<<<>>>>
 ```
   static Quantity from_int(int quantity) {
       if (quantity < 0) throw std::runtime_error("Invalid quantity");
