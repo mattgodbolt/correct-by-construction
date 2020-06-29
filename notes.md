@@ -237,3 +237,6 @@ New list:
 
 - work in progress on price and quantity classes:
   - https://godbolt.org/z/j56zuY
+
+- work in progress on message
+  - https://godbolt.org/z/nMp3nI
