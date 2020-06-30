@@ -254,3 +254,58 @@ New list:
 https://godbolt.org/z/aKjEXV
 https://godbolt.org/z/gFqA9t
 https://godbolt.org/z/7f4WcD
+
+
+--- NOTES FROM FIRST IN PERSON
+
+RD notes:
+endOrder example:
+give some nod to warnings
+Critique of aliases:
+Aliases give a hint to the developer, with no hint to the compiler
+Quantity contract check on bounds of qty: Likely to get questions regarding usage of contracts or cost of exception
+Enum switches:
+Appeal to warning to protect you, but disregarded it, above
+Could add a "Count" value to end of the enum and static_assert at the point of the switch that it's a particular size
+get_tinkerable() hides the creation of the lock, making it more likely that a consumer will inadvertently deadlock, as they try to get a tinkerable in some path, while another tinkerable is still alive
+move... compile()... could just make compile() destructive, by moving state into CompiledBlah. Need to make origin class have a default state that is well-behaved after compile() is called
+General: May be worth having a quick nod to Ben's idea of Seattle Sure and the ever present drive to give stronger correctness guarantees
+
+PF notes:
+Maybe show a couple more examples of transposing parameters. Specifically something non-trading
+Maybe a code example of a call with a non-explicit constructor that does the wrong thing?
+For the mathy types, Negative numbers integers are in fact "countable" :)
+Ladder explanation is a little fast for non finance people. Example of an order coming in?
+Mighet want to explain that AddMesssage is aka a NewOrder
+Could emphasise that [nodiscard] specifically exists for better apis (haven't thought about it but might want to call out other language features you are covering that are explicitly in there to make your apis better)
+True that RAII is useful for more than good apis, but since you're talk is about apis might want to steer away from those uses.
+
+TM notes: "be careful about quantity <-> shares"
+
+LA notes:
+General:
+ - I'm a fan of slide numbers so it's easy to refer back to stuff (I realize I didn't add them to my own slides in my last presentations lmao)
+ - Sort of re: what TM said, it might be good for your two trading examples to make it clear that you're just using trading as examples. With us it's easy to transition into: yeah here's another trading thing, but I think for others being explicit about: I chose to use trading here might help? idk
+
+Things you said to yourself that I wrote down in case you forgot:
+ - On Hello! slide 'should have added Google'
+ - Maybe add Feathers quote about code is how you treat coworkers
+ - "the future" slide at the end should be removed
+ - More color on the unsigned int from negative number - not two's complement - I know you asked Rob about this, so maybe you have clearer in your mind now
+ - Split separating concerns slide into two
+
+Things that could maybe be explained a bit more:
+ - Maybe make clear that the 'from' function needs to be explicitly called. See this later, but there's so much 'magic' in C++ that initially I wasn't sure if this was something I could expect to be done for me
+ - Explain the narrowing conversion and how that does what we want it to
+ - Sort of understood how the constexpr gets us compile time check, but immediately said that in that function the from is still at run time, so maybe a little clearer how that plays together
+ - Mentioned the 'friend myWidget' in passing but sort of brushed it off, might be worth taking out/being explicit that you won't discuss
+ - A little confused about the && addition
+ - Subscriber discussion was a little disjoint, but I know this is part that's going to be worked on more anyway
+ - Might want to mention what those -W flags actually do
+
+The Good!!:
+ - I don't think you talked too fast!
+ - Super useful info
+ - In general easy to understand and generally simple stuff that even C++ noobs such as myself can grasp
+ - Good RAII explanation
+ - A+ simple slides, easy for structure but you don't just read them
