@@ -248,3 +248,9 @@ New list:
   - 25m to "Market Data"
   - 32m to lambdas
   - 40m clearly "done" but not really done well 
+
+
+- from comment-smells
+https://godbolt.org/z/aKjEXV
+https://godbolt.org/z/gFqA9t
+https://godbolt.org/z/7f4WcD

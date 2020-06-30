@@ -1,121 +1,298 @@
-## Lambdas
+## Invariants
 
-Protecting invariants
-
-```
+<pre><code class="cpp" data-line-numbers data-trim>
 class MyWidget {
-    std::mutex mutex_;
+  std::mutex mutex_;
+
 public:
-  void lock(); // must unlock after
+  void lock(); // don't forget to unlock
 
-  void tinkerWith(int amount); // must hold lock
+  void tinker_with(int amount); // must hold lock
 
-  void unlock();
+  void unlock(); // must be called after lock
 };
-```
+</code></pre>
 
 ---
-```
+
+### A bad design?
+
+<pre><code class="cpp" data-line-numbers="|2|3-4|5|" data-trim>
 void tinker(MyWidget &widget) {
-   widget.lock();
-   widget.tinkerWith(123);
-   widget.tinkerWith(333);
-   widget.unlock();
+  widget.lock();
+  widget.tinker_with(123);
+  widget.tinker_with(333);
+  widget.unlock();
 }
-```
+</code></pre>
 
 ---
 
-```
+### Improvements!
+
+<pre><code class="cpp" data-line-numbers="|5" data-trim>
+class MyWidget {
+  std::mutex mutex_;
+
+public:
+  std::unique_lock&lt;std::mutex> lock();
+
+  void tinker_with(int amount); // must hold lock
+};
+</code></pre>
+
+---
+
+### Spot the mistake?
+
+<pre><code class="cpp" data-line-numbers="|2" data-trim>
+void tinker(MyWidget &widget) {
+  widget.lock();
+  widget.tinker_with(123);
+  widget.tinker_with(333);
+}
+</code></pre>
+
+---
+
+### Improvements!
+
+<pre><code class="cpp" data-line-numbers="4|" data-trim>
 class MyWidget {
   std::mutex mutex_;
 public:
-  [[nodiscard]] std::unique_lock<std::mutex> lock();
-  void tinkerWith(int amount); // must hold lock
+  [[nodiscard]] std::unique_lock&lt;std::mutex> lock();
+  void tinker_with(int amount); // must hold lock
 };
-```
+</code></pre>
 
 ---
 
-```
+### Improvements!
+
+<pre><code class="cpp" data-line-numbers data-trim>
 void tinker(MyWidget &widget) {
-   widget.lock(); // Thank goodness for nodiscard
-   widget.tinkerWith(123);
-   widget.tinkerWith(333);
+  auto lock = widget.lock();
+  widget.tinker_with(123);
+  widget.tinker_with(333);
 }
-```
+</code></pre>
 
 ---
 
-```
-class MyWidget {
-    std::mutex mutex_;
+### Last apology
 
+<pre><code class="cpp" data-line-numbers data-trim>
+  void tinker_with(int amount); // must hold lock
+</code></pre>
+
+---
+
+### Mutator interface
+
+<pre><code class="cpp" data-line-numbers="|7" data-trim>
+class MyWidget {
+ std::mutex mutex_;
+
+  void tinker_with(int amount);
 public:
-  class Tinkerable {
-      MyWidget &widget_;
-      std::unique_lock<std::mutex> lock_;
-      friend MyWidget;
-      explicit Tinkerable(MyWidget &widget) : widget_(widget), lock_(widget_.mutex_) {}
-    public:
-      void tinkerWith(int amount);
-  };
+  class Tinkerable;
 
   Tinkerable get_tinkerable() { return Tinkerable(*this); }
 };
-```
-
-```
-void tinker(MyWidget &widget) {
-    auto tinkerable = widget.get_tinkerable();
-    tinkerable.tinkerWith(123);
-    tinkerable.tinkerWith(333);
-}
-```
+</code></pre>
 
 ---
 
-```
+### Mutator interface
 
+<pre><code class="cpp" data-line-numbers="|2-3|7-8|11-13" data-trim>
+class MyWidget::Tinkerable {
+  MyWidget &widget_;
+  std::unique_lock&lt;std::mutex> lock_;
+
+  friend MyWidget;
+
+  explicit Tinkerable(MyWidget &widget) 
+    : widget_(widget), lock_(widget_.mutex_) {}
+    
+  public:
+    void tinker_with(int amount) {
+      widget_.tinker_with(amount);
+    }
+};
+</code></pre>
+
+---
+
+### Using the Mutator interface
+
+<pre><code class="cpp" data-line-numbers data-trim>
+void tinker(MyWidget &widget) {
+  auto tinkerable = widget.get_tinkerable();
+  tinkerable.tinker_with(123);
+  tinkerable.tinker_with(333);
+}
+</code></pre>
+
+---
+
+### Don't call us, we'll call you
+<pre><code class="cpp" data-line-numbers="|4-8|9|12-13" data-trim>
 class MyWidget {
   std::mutex mutex_;
-  class Tinkerable {
-    int tinkerVal = 123;
 
+  class WidgetState {
+    int state = 123;
   public:
-    void tinkerWith(int amount);
+    void tinker_with(int amount);
   };
-  Tinkerable tinkerable_;
+  WidgetState state_;
 
 public:
-  template <typename TinkerFunc> void tinker(TinkerFunc func) {
-    std::unique_lock lock(mutex_);
-    func(tinkerable_);
-  }
+  template &lt;typename TinkerFunc>
+  void tinker(TinkerFunc tinker_func);
 };
+</code></pre>
 
-void tinker(MyWidget &widget) {
-  widget.tinker([](auto &tinkerable) {
-    tinkerable.tinkerWith(123);
-    tinkerable.tinkerWith(333);
-  });
+---
+### Don't call us, we'll call you
+
+<pre><code class="cpp" data-line-numbers="|3-4" data-trim>
+template &lt;typename TinkerFunc>
+void MyWidget::tinker(TinkerFunc tinker_func) {
+  std::unique_lock lock(mutex_);
+  tinker_func(state_);
 }
-```
-// https://godbolt.org/z/aKjEXV
+</code></pre>
 
 ---
 
-## "must be compiled" ?
-https://godbolt.org/z/gFqA9t
-https://godbolt.org/z/7f4WcD
+### Don't call us, we'll call you
 
-and then what if "can't use compiler after compilation" ?
-- https://godbolt.org/z/Khpo34 https://godbolt.org/z/-qXMcN
+<pre><code class="cpp" data-line-numbers="|3-6" data-trim>
+void tinker(MyWidget &widget) {
+  widget.tinker(
+    [](auto &tinkerable) {
+      tinkerable.tinker_with(123);
+      tinkerable.tinker_with(333);
+    }
+  );
+}
+</code></pre>
+
+---
+
+### Other comment smells
+
+<pre><code class="cpp" data-line-numbers="|3|5-6|8-10" data-trim>
+class ShaderRegistry {
+public:
+  void add(const char *shader);
+
+  // once all shaders are added, compile
+  void compile_and_link();
+
+  // get a compiled shader by name.
+  // must be compiled and linked!
+  CompiledShader &get_compiled(const char *name) const;
+};
+</code></pre>
+
+---
+
+### Separating concerns
+
+<pre><code class="cpp" data-line-numbers="|8|10|1-4|3" data-trim>
+class CompiledShaders {
+public:
+  CompiledShader &get_compiled(const char *name) const;
+};
+
+class ShaderCompiler {
+public:
+  void add(const char *shader);
+
+  [[nodiscard]] CompiledShaders compile() const;
+};
+</code></pre>
+
+---
+
+### Destructive separation
+
+<pre><code class="cpp" data-line-numbers="|5-8" data-trim>
+class ShaderCompiler {
+public:
+  void add(const char *shader);
+
+  // Resources used in compilation are transferred
+  // to the CompiledShaders: you cannot call compile()
+  // twice!!
+  [[nodiscard]] CompiledShaders compile();
+};
+</code></pre>
+
+---
+
+### Destructive separation
+
+<pre><code class="cpp" data-line-numbers="|5" data-trim>
+class ShaderCompiler {
+public:
+  void add(const char *shader);
+
+  [[nodiscard]] CompiledShaders compile() &&;
+};
+</code></pre>
+
+---
+
+### Destructive separation
+
+<pre><code class="cpp" data-line-numbers="|6" data-trim>
+void use() {
+  ShaderCompiler compiler;
+  compiler.add("bob");
+  compiler.add("dawn");
+
+  auto shaders = std::move(compiler).compile();
+  shaders.get_compiled("bob").render();
+}
+</code></pre>
+
+---
+
+### Destructive separation
+
+<pre><code class="cpp" data-line-numbers="|6" data-trim>
+  auto shaders = std::move(compiler).compile();
+  shaders.get_compiled("bob").render();
+  // oops
+  compiler.add("persephone");
+</code></pre>
+
+<pre class=fragment>
+Compiler returned: 0
+</pre>
+
+---
+
+### clang-tidy
+
+<pre>
+warning: 'compiler' used after it was moved
+  compiler.add("persephone");
+  ^
+move occurred here:
+  auto shaders = std::move(compiler).compile();
+                 ^
+</pre>
 
 ---
 
 ## Summary
 - Protect invariants with code
 - Apologetic comment anti-pattern
-  - `// Must have lock` smells
+  - `// Must ..` smells
 - `clang-tidy` is your friend

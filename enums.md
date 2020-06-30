@@ -29,7 +29,7 @@ struct AddMessage {
 
 ### First things first
 
-<pre><code class="cpp" data-line-numbers="1" data-trim>
+<pre><code class="cpp" data-line-numbers="|1" data-trim>
 // must be 13 bytes long to match spec
 struct MessageHeader {
   uint64_t sequence_num;
@@ -197,3 +197,4 @@ warning: enumeration value 'Trade' not handled in switch [-Wswitch]
   - even sized ones
 - avoid `if`, use `switch`
   - avoid `default` cases
+- `-Wall -Wextra -Werror`

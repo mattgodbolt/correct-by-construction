@@ -1,6 +1,7 @@
 ## RAII
 
 - aka CADR
+- aka I have run out of time, haven't I?
 
 ---
 
@@ -18,5 +19,4 @@ not just for memory and locks
 ---
 
 ## Summary
-- `[[nodiscard]]`
 - raii is not just for memory
