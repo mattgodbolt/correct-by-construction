@@ -8,7 +8,7 @@ Market data in finance
 
 ### Market data
 
-<pre><code class="cpp" data-line-numbers="|1-6|5|8-12|" data-trim>
+<pre><code class="cpp" data-line-numbers="|1-6|5|8-13|" data-trim>
 // Must be 13 bytes long to match vendor spec.
 struct MessageHeader {
   uint64_t sequence_num;
@@ -21,6 +21,7 @@ struct AddMessage {
   uint32_t symbol_id;
   int32_t price;
   uint32_t quantity;
+  char side;
 };
 // and struct ModifyMessage, DeleteMessage...
 </code></pre>

@@ -1,6 +1,6 @@
 ## Invariants
 
-<pre><code class="cpp" data-line-numbers data-trim>
+<pre><code class="cpp" data-line-numbers="|7|5,9" data-trim>
 class MyWidget {
   std::mutex mutex_;
 
@@ -35,7 +35,7 @@ class MyWidget {
   std::mutex mutex_;
 
 public:
-  std::unique_lock&lt;std::mutex> lock();
+  std::scoped_lock&lt;std::mutex> lock();
 
   void tinker_with(int amount); // must hold lock
 };
@@ -61,11 +61,18 @@ void tinker(MyWidget &widget) {
 class MyWidget {
   std::mutex mutex_;
 public:
-  [[nodiscard]] std::unique_lock&lt;std::mutex> lock();
+  [[nodiscard]] std::scoped_lock&lt;std::mutex> lock();
   void tinker_with(int amount); // must hold lock
 };
 </code></pre>
 
+<pre class=fragment>
+In function 'void tinker(MyWidget&)':
+ error: ignoring return value of 'scoped_lock&lt;mutex> MyWidget::lock()',
+        declared with attribute 'nodiscard' [-Werror=unused-result]
+    |   widget.lock();
+    |               ^
+</pre>
 ---
 
 ### Improvements!
@@ -90,7 +97,7 @@ void tinker(MyWidget &widget) {
 
 ### Mutator interface
 
-<pre><code class="cpp" data-line-numbers="|7" data-trim>
+<pre><code class="cpp" data-line-numbers="|8" data-trim>
 class MyWidget {
  std::mutex mutex_;
 
@@ -109,7 +116,7 @@ public:
 <pre><code class="cpp" data-line-numbers="|2-3|7-8|11-13" data-trim>
 class MyWidget::Tinkerable {
   MyWidget &widget_;
-  std::unique_lock&lt;std::mutex> lock_;
+  std::scoped_lock&lt;std::mutex> lock_;
 
   friend MyWidget;
 
@@ -128,7 +135,7 @@ class MyWidget::Tinkerable {
 ### Using the Mutator interface
 
 <pre><code class="cpp" data-line-numbers data-trim>
-void tinker(MyWidget &widget) {
+void tinker(MyWidge t &widget) {
   auto tinkerable = widget.get_tinkerable();
   tinkerable.tinker_with(123);
   tinkerable.tinker_with(333);
@@ -161,7 +168,7 @@ public:
 <pre><code class="cpp" data-line-numbers="|3-4" data-trim>
 template &lt;typename TinkerFunc>
 void MyWidget::tinker(TinkerFunc tinker_func) {
-  std::unique_lock lock(mutex_);
+  std::scoped_lock lock(mutex_);
   tinker_func(state_);
 }
 </code></pre>
@@ -191,7 +198,7 @@ public:
   void add(const char *shader);
 
   // once all shaders are added, compile
-  void compile_and_link();
+  void compile();
 
   // get a compiled shader by name.
   // must be compiled and linked!
@@ -215,6 +222,19 @@ public:
 
   [[nodiscard]] CompiledShaders compile() const;
 };
+</code></pre>
+
+### Separating concerns
+
+<pre><code class="cpp" data-line-numbers data-trim>
+void use() {
+  ShaderCompiler compiler;
+  compiler.add("bob");
+  compiler.add("dawn");
+
+  auto shaders = compiler.compile();
+  shaders.get_compiled("bob").render();
+}
 </code></pre>
 
 ---
@@ -265,7 +285,25 @@ void use() {
 
 ### Destructive separation
 
-<pre><code class="cpp" data-line-numbers="|6" data-trim>
+<pre><code class="cpp" data-line-numbers data-trim>
+CompiledShaders compile() {
+  ShaderCompiler compiler;
+  compiler.add("bob");
+  compiler.add("dawn");
+  return compiler.compile();
+}
+
+void use() {
+  auto shaders = compile();
+  shaders.get_compiled("bob").render();
+}
+</code></pre>
+
+---
+
+### Destructive separation
+
+<pre><code class="cpp" data-line-numbers="|1|3-4" data-trim>
   auto shaders = std::move(compiler).compile();
   shaders.get_compiled("bob").render();
   // oops
@@ -295,4 +333,5 @@ move occurred here:
 - Protect invariants with code
 - Apologetic comment anti-pattern
   - `// Must ..` smells
+- Separation of concerns
 - `clang-tidy` is your friend

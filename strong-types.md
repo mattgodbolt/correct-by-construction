@@ -158,7 +158,7 @@ Quantity whatAboutThis(static_cast&ltunsigned int>(atoi("123")));
 
 ### Quantity
 
-<pre><code class="cpp" data-line-numbers data-trim>
+<pre><code class="cpp" data-line-numbers="|3-4" data-trim>
 template&lt;typename T>
 static Quantity from(T quantity) {
   if (quantity &lt; 0 || quantity > Quantity::max())
@@ -170,7 +170,8 @@ static Quantity from(T quantity) {
 <pre><code class="cpp" data-line-numbers data-trim>
 template&lt;typename T>
 static Quantity from(T quantity) {
-  return gsl::narrow&lt;decltype(quantity_)>(quantity);
+  return Quantity(
+    gsl::narrow&lt;decltype(quantity_)>(quantity));
 }
 </code></pre></div>
 
@@ -179,7 +180,7 @@ static Quantity from(T quantity) {
 
 ### Quantity
 
-<pre><code class="cpp" data-line-numbers="1-3|5-8|10-12" data-trim>
+<pre><code class="cpp" data-line-numbers="|1-3|5-8|10-12" data-trim>
 constexpr Quantity operator""_qty(unsigned long long value) {
   return Quantity::from(value);
 }
