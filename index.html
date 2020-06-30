@@ -167,6 +167,20 @@
             font-size: smaller;
             font-style: italic;
         }
+
+        div.footer {
+            z-index: 10;
+            font-size: 40%;
+            font-style: italic;
+            position: absolute;
+            bottom: 1em;
+            text-align: center;
+            background: #ddd;
+            box-shadow: 4px 4px #888;
+            border-radius: 4px;
+            padding: 8px !important;
+            margin-left: 15px;
+        }
     </style>
 
     <!-- Theme used for syntax highlighting of code -->
@@ -183,19 +197,31 @@
                     <h5>Matt Godbolt <a href="https://twitter.com/mattgodbolt">@mattgodbolt</a></h5>
                 </div>
             </section>
-            <section data-markdown="intro.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="intro.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/grey-lake_8440283318_o.jpg">
             </section>
-            <section data-markdown="strong-types.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="strong-types.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/chess_230416692_o.jpg">
             </section>
-            <section data-markdown="enums.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="enums.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/ripples_230419567_o.jpg"></section>
             </section>
-            <section data-markdown="comment-smells.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="comment-smells.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/path-to-my-heart_8489878977_o.jpg">
             </section>
-            <section data-markdown="raii.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="raii.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/chess_230416692_o.jpg">
             </section>
-            <section data-markdown="conclusion.md" data-separator-vertical="^---\n" data-separator="---disabled---">
+            <section data-markdown="conclusion.md" data-separator-vertical="^---\n" data-separator="---disabled---"
+            data-background="images/bg/tufa-at-night_7499631506_o.jpg">
             </section>
         </div>
+        <div class="footer">
+            &copy; <a href="https://twitter.com/mattgodbolt">Matt Godbolt</a> 2020
+            <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a><br>
+            Background images &copy; <a href="https://twitter.com/romainguy">Romain Guy</a>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>
+        </div>    
     </div>
 
     <script src="reveal.js/dist/reveal.js"></script>
