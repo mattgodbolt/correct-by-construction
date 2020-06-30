@@ -2,8 +2,10 @@
 
 - aka CADR
 
+---
 
-not just for memory
+not just for memory and locks
+
 ---
 
 * handles
@@ -15,6 +17,6 @@ not just for memory
 
 ---
 
-## Conclusions
+## Summary
 - `[[nodiscard]]`
 - raii is not just for memory

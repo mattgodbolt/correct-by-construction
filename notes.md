@@ -240,3 +240,11 @@ New list:
 
 - work in progress on message
   - https://godbolt.org/z/nMp3nI
+
+
+### first run at home
+- timings
+  - 18m to "Performance"
+  - 25m to "Market Data"
+  - 32m to lambdas
+  - 40m clearly "done" but not really done well 

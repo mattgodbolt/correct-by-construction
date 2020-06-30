@@ -1,6 +1,6 @@
-## Strong (Tiny) Types
+## Strong Value Types
 
-Picture of an ant? Tiny Type
+TODO: Picture of an ant?
 
 ---
 

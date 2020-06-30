@@ -6,7 +6,7 @@ Protecting invariants
 class MyWidget {
     std::mutex mutex_;
 public:
-  void lock();
+  void lock(); // must unlock after
 
   void tinkerWith(int amount); // must hold lock
 
