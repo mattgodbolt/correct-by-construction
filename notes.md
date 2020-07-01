@@ -309,3 +309,14 @@ The Good!!:
  - In general easy to understand and generally simple stuff that even C++ noobs such as myself can grasp
  - Good RAII explanation
  - A+ simple slides, easy for structure but you don't just read them
+
+
+--------- super immportant!
+
+UDL SECTION IS WRONG WRONG!!!
+
+constexpr std::byte operator"" _b(unsigned long long t) {
+  return std::byte(gsl::narrow<uint8_t>(t));
+}
+
+doesn't throw on `auto x = 1000_b;` -- needs `constexpr`
