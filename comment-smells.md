@@ -1,4 +1,4 @@
-## Apologetic Comments
+## Comment smells
 
 <pre><code class="cpp" data-line-numbers="|10-11|5-6|7-8" data-trim>
 class MyWidget {
