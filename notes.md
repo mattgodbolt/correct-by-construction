@@ -266,6 +266,8 @@ Aliases give a hint to the developer, with no hint to the compiler
 Quantity contract check on bounds of qty: Likely to get questions regarding usage of contracts or cost of exception
 Enum switches:
 Appeal to warning to protect you, but disregarded it, above
+--- mg note - which flags are on  Wall Wextra; disregard = signed/unsigned, 'eu-central-1'
+    - -Wsign-conversion
 Could add a "Count" value to end of the enum and static_assert at the point of the switch that it's a particular size
 get_tinkerable() hides the creation of the lock, making it more likely that a consumer will inadvertently deadlock, as they try to get a tinkerable in some path, while another tinkerable is still alive
 move... compile()... could just make compile() destructive, by moving state into CompiledBlah. Need to make origin class have a default state that is well-behaved after compile() is called
