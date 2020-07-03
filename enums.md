@@ -1,29 +1,22 @@
 ## Enumerations
 
-Market data in finance
-
 ![ladder](images/TwtrLadder.png)
 
 ---
 
 ### Market data
 
-<pre><code class="cpp" data-line-numbers="|1-6|5|8-13|" data-trim>
-// Must be 13 bytes long to match vendor spec.
+<pre><code class="cpp" data-line-numbers="|1-6|5|8|9|10" data-trim>
+// Must be 13 bytes long.
 struct MessageHeader {
   uint64_t sequence_num;
   uint32_t message_size;
-  char type;      // One of 'A', 'M', 'D' etc
+  char type;             // 'A', 'M' or 'D'
 };
-// Header is immediately followed by one of...
-struct AddMessage {
-  uint64_t order_id;
-  uint32_t symbol_id;
-  int32_t price;
-  uint32_t quantity;
-  char side;
-};
-// and struct ModifyMessage, DeleteMessage...
+
+struct AddMessage { /*...*/ };
+struct DeleteMessage { /*...*/ };
+struct ModifyMessage { /*...*/ };
 </code></pre>
 
 ---
@@ -31,11 +24,11 @@ struct AddMessage {
 ### First things first
 
 <pre><code class="cpp" data-line-numbers="|1" data-trim>
-// must be 13 bytes long to match spec
+// Must be 13 bytes long.
 struct MessageHeader {
   uint64_t sequence_num;
   uint32_t message_size;
-  char type;      // One of 'A', 'M', 'D' etc
+  char type;             // 'A', 'M' or 'D'
 };
 </code></pre>
 
@@ -47,7 +40,7 @@ struct MessageHeader {
 struct MessageHeader {
   uint64_t sequence_num;
   uint32_t message_size;
-  char type;      // One of 'A', 'M', 'D' etc
+  char type;             // 'A', 'M' or 'D'
 };
 
 static_assert(sizeof(MessageHeader) == 13);
@@ -76,18 +69,34 @@ static_assert(sizeof(MessageHeader) == 13);
 
 ### Handling
 
-<pre><code class="cpp" data-line-numbers="|1-3|5-13|6|7" data-trim>
-void handle(const AddMessage &add_message);
-void handle(const ModifyMessage &mod_message);
-void handle(const DeleteMessage &del_message);
+<pre><code class="cpp" data-line-numbers="|1-3|5-9|11-12" data-trim>
+void handle(const AddMessage &add);
+void handle(const ModifyMessage &mod);
+void handle(const DeleteMessage &del);
 
-void handle(const MessageHeader &header, const void *payload) {
-  if (header.type == 'A') {
-    handle(*reinterpret_cast&lt;const AddMessage *>(payload));
-  } else if (header.type == 'M') {
-    handle(*reinterpret_cast&lt;const ModifyMessage *>(payload));
-  } else if (header.type == 'D') {
-    handle(*reinterpret_cast&lt;const DeleteMessage *>(payload));
+template&lt;typename Msg>
+void handle(const void *payload) {
+  handle(*static_cast&lt;const Msg *>(
+    payload));
+}
+
+void on_message(const MessageHeader &hdr, 
+                const void *payload);
+</code></pre>
+
+---
+
+### Handling
+
+<pre><code class="cpp" data-line-numbers data-trim>
+void on_message(const MessageHeader &hdr, 
+                const void *payload) {
+  if (hdr.type == 'A') {
+    handle&lt;AddMessage>(payload);
+  } else if (hdr.type == 'M') {
+    handle&lt;ModifyMessage>(payload);
+  } else if (hdr.type == 'D') {
+    handle&lt;DeleteMessage>(payload);
   }
 }
 </code></pre>
@@ -97,16 +106,17 @@ void handle(const MessageHeader &header, const void *payload) {
 ### Handling
 
 <pre><code class="cpp" data-line-numbers data-trim>
-void handle(const MessageHeader &header, const void *payload) {
-  switch (header.type) {
+void handle(const MessageHeader &hdr, 
+            const void *payload) {
+  switch (hdr.type) {
   case 'A': 
-    handle(*reinterpret_cast&lt;const AddMessage *>(payload));
+    handle&lt;AddMessage>(payload);
     break;
   case 'M': 
-    handle(*reinterpret_cast&lt;const ModifyMessage *>(payload));
+    handle&lt;ModifyMessage>(payload);
     break;
   case 'D':
-    handle(*reinterpret_cast&lt;const DeleteMessage *>(payload));
+    handle&lt;DeleteMessage>(payload);
     break;
   }
 }
@@ -144,19 +154,20 @@ static_assert(sizeof(MessageHeader) == 13);
 ### Enumerations
 
 <pre><code class="cpp" data-line-numbers data-trim>
-void handle(const MessageHeader &header, const void *payload) {
-  switch (header.type) {
-  case MessageType::Add:
-    return handle(*reinterpret_cast&lt;const AddMessage *>(payload));
-  case MessageType::Modify:
-    return handle(*reinterpret_cast&lt;const ModifyMessage*>(payload));
-  case MessageType::Delete:
-    return handle(*reinterpret_cast&lt;const DeleteMessage*>(payload));
+void handle(const MessageHeader &hdr, 
+            const void *payload) {
+  switch (hdr.type) {
+  case 'A': 
+    return handle&lt;AddMessage>(payload);
+  case 'M': 
+    return handle&lt;ModifyMessage>(payload);
+  case 'D':
+    return handle&lt;DeleteMessage>(payload);
   }
-
   throw std::runtime_error(
-    "Invalid message type " + std::to_string(
-        static_cast&lt;int>(header.type)));
+    "Invalid message type " 
+    + std::to_string(
+        static_cast&lt;int>(hdr.type)));
 }
 </code></pre>
 
@@ -184,18 +195,19 @@ enum class MessageType : char {
 ### Trades!
 
 <pre>
-In function 'void handle(const MessageHeader&, const void*)':
-warning: enumeration value 'Trade' not handled in switch [-Wswitch]
- |   switch (header.type) {
+In function 'void handle(const MessageHeader&, ...
+warning: enumeration value 'Trade' 
+  not handled in switch [-Wswitch]
+ |   switch (hdr.type) {
  |          ^
 </pre>
 
+TODO: talk about Wall Wextra Werror etc? tradeoffs
 ---
 
 ## Summary
-- `static_assert` on whatever invariants you can
+- `static_assert`
 - Use enum classes for any choices
   - even sized ones
-- avoid `if`, use `switch`
-  - avoid `default` cases
-- `-Wall -Wextra -Werror`
+- Avoid `if`, use no-`default` `switch`
+- Warnings as errors

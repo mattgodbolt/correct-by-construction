@@ -18,13 +18,21 @@
 
 ## Toolbox
 
-* `const`
-* `constexpr`
+<div class=w40>
+
+* `const` & `constexpr`
 * Enumerations
 * Lambdas
+
+</div>
+
+<div class=w60>
+
 * RAII
 * Static code analysis
 * Strong types
+
+</div>
 
 ---
 
@@ -33,11 +41,16 @@
 ---
 ## Trading System
 <pre><code class="cpp" data-trim>
-void sendOrder(const char *symbol, bool buy, int qty, double price);
+void sendOrder(
+  const char *symbol, 
+  bool buy,
+  int quantity,
+  double price);
 </code></pre>
 
 ---
 
+## Selling shares
 <pre><code class="cpp" data-line-numbers data-trim>
 void sellMyGoogleShares() {
   sendOrder("GOOG", false, 100, 1000.00);
