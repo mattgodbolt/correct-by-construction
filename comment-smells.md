@@ -17,7 +17,7 @@ public:
 
 ---
 
-### A bad design?
+#### A bad design?
 
 <pre><code class="cpp" data-line-numbers="|2|3-4|5|" data-trim>
 void tinker(MyWidget &widget) {
@@ -30,7 +30,7 @@ void tinker(MyWidget &widget) {
 
 ---
 
-### Improvements!
+#### Improvements!
 
 <pre><code class="cpp" data-line-numbers="|4" data-trim>
 class MyWidget {
@@ -45,7 +45,7 @@ class MyWidget {
 
 ---
 
-### Spot the mistake?
+#### Spot the mistake?
 
 <pre><code class="cpp" data-line-numbers="|2" data-trim>
 void tinker(MyWidget &widget) {
@@ -57,7 +57,7 @@ void tinker(MyWidget &widget) {
 
 ---
 
-### Improvements!
+#### Improvements!
 
 <pre><code class="cpp" data-line-numbers="4|" data-trim>
 class MyWidget {
@@ -80,7 +80,7 @@ error: ignoring return value of
 </pre>
 ---
 
-### Improvements!
+#### Improvements!
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void tinker(MyWidget &widget) {
@@ -92,7 +92,7 @@ void tinker(MyWidget &widget) {
 
 ---
 
-### Last apology
+#### Last apology
 
 <pre><code class="cpp" data-line-numbers data-trim>
   // must hold lock
@@ -101,7 +101,7 @@ void tinker(MyWidget &widget) {
 
 ---
 
-### Mutator interface
+#### Mutator interface
 
 <pre><code class="cpp" data-line-numbers="|6-8" data-trim>
 class MyWidget {
@@ -117,7 +117,7 @@ public:
 
 ---
 
-### Mutator interface
+#### Mutator interface
 
 <pre><code class="cpp" data-line-numbers="|2-3|6-8|11-13" data-trim>
 class MyWidget::Tinkerable {
@@ -138,7 +138,7 @@ public:
 
 ---
 
-### Using the Mutator interface
+#### Using the Mutator interface
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void tinker(MyWidge t &widget) {
@@ -150,7 +150,7 @@ void tinker(MyWidge t &widget) {
 
 ---
 
-### Don't call us, we'll call you
+#### Don't call us, we'll call you
 <pre><code class="cpp" data-line-numbers="|4-8|9|12-13" data-trim>
 class MyWidget {
   std::mutex mutex_;
@@ -169,7 +169,7 @@ public:
 </code></pre>
 
 ---
-### Don't call us, we'll call you
+#### Don't call us, we'll call you
 
 <pre><code class="cpp" data-line-numbers="|4-5" data-trim>
 template &lt;typename TinkerFunc>
@@ -182,7 +182,7 @@ void MyWidget::tinker(
 
 ---
 
-### Don't call us, we'll call you
+#### Don't call us, we'll call you
 
 <pre><code class="cpp" data-line-numbers="|3-6" data-trim>
 void tinker(MyWidget &widget) {
@@ -197,7 +197,7 @@ void tinker(MyWidget &widget) {
 
 ---
 
-### Other comment smells
+#### Other comment smells
 
 <pre><code class="cpp" data-line-numbers="|3|5-6|8-11" data-trim>
 class ShaderRegistry {
@@ -216,7 +216,7 @@ public:
 
 ---
 
-### Separating concerns
+#### Separating concerns
 
 <pre><code class="cpp" data-line-numbers="|9|11-12|1-5|3-4" data-trim>
 class CompiledShaders {
@@ -236,7 +236,7 @@ public:
 
 ---
 
-### Separating concerns
+#### Separating concerns
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void use() {
@@ -251,7 +251,7 @@ void use() {
 
 ---
 
-### Destructive separation
+#### Destructive separation
 
 <pre><code class="cpp" data-line-numbers="|5-9" data-trim>
 class ShaderCompiler {
@@ -268,7 +268,7 @@ public:
 
 ---
 
-### Destructive separation
+#### Destructive separation
 
 <pre><code class="cpp" data-line-numbers="|5-6" data-trim>
 class ShaderCompiler {
@@ -284,7 +284,7 @@ TODO: explain `&&`
  mabye show error? then std::move()
 ---
 
-### Destructive separation
+#### Destructive separation
 
 <pre><code class="cpp" data-line-numbers="|6" data-trim>
 void use() {
@@ -300,7 +300,7 @@ void use() {
 
 ---
 
-### Destructive separation
+#### Destructive separation
 
 <pre><code class="cpp" data-line-numbers data-trim>
 CompiledShaders compile() {
@@ -318,7 +318,7 @@ void use() {
 
 ---
 
-### Destructive separation
+#### Destructive separation
 
 <pre><code class="cpp" data-line-numbers="|1|3-4" data-trim>
   auto shaders = std::move(compiler).compile();
@@ -333,7 +333,7 @@ Compiler returned: 0
 
 ---
 
-### clang-tidy
+#### clang-tidy
 
 <pre>
 warning: 'compiler' used after it was moved

@@ -4,7 +4,7 @@
 
 ---
 
-### Market data
+#### Market data
 
 <pre><code class="cpp" data-line-numbers="|1-6|5|8|9|10" data-trim>
 // Must be 13 bytes long.
@@ -21,7 +21,7 @@ struct ModifyMessage { /*...*/ };
 
 ---
 
-### First things first
+#### First things first
 
 <pre><code class="cpp" data-line-numbers="|1" data-trim>
 // Must be 13 bytes long.
@@ -34,7 +34,7 @@ struct MessageHeader {
 
 ---
 
-### First things first
+#### First things first
 
 <pre><code class="cpp" data-line-numbers="7" data-trim>
 struct MessageHeader {
@@ -53,7 +53,7 @@ error: static assertion failed
 </pre>
 ---
 
-### First things first
+#### First things first
 
 <pre><code class="cpp" data-line-numbers="1" data-trim>
 struct [[gnu::packed]] MessageHeader {
@@ -67,7 +67,7 @@ static_assert(sizeof(MessageHeader) == 13);
 
 ---
 
-### Handling
+#### Handling
 
 <pre><code class="cpp" data-line-numbers="|1-3|5-9|11-12" data-trim>
 void handle(const AddMessage &add);
@@ -86,7 +86,7 @@ void on_message(const MessageHeader &hdr,
 
 ---
 
-### Handling
+#### Handling
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void on_message(const MessageHeader &hdr, 
@@ -103,7 +103,7 @@ void on_message(const MessageHeader &hdr,
 
 ---
 
-### Handling
+#### Handling
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void handle(const MessageHeader &hdr, 
@@ -125,7 +125,7 @@ void handle(const MessageHeader &hdr,
 
 ---
 
-### Enumerations
+#### Enumerations
 
 <pre><code class="cpp" data-line-numbers data-trim>
 enum class MessageType : char {
@@ -138,7 +138,7 @@ enum class MessageType : char {
 
 ---
 
-### Enumerations
+#### Enumerations
 
 <pre><code class="cpp" data-line-numbers="|4" data-trim>
 struct MessageHeader {
@@ -151,7 +151,7 @@ static_assert(sizeof(MessageHeader) == 13);
 
 ---
 
-### Enumerations
+#### Enumerations
 
 <pre><code class="cpp" data-line-numbers data-trim>
 void handle(const MessageHeader &hdr, 
@@ -173,13 +173,13 @@ void handle(const MessageHeader &hdr,
 
 ---
 
-### So why is this better?
+#### So why is this better?
 
 <div class=fragment>We forgot to handle a message!</div>
 
 ---
 
-### Trades!
+#### Trades!
 
 <pre><code class="cpp" data-line-numbers="|5" data-trim>
 enum class MessageType : char {
@@ -192,7 +192,7 @@ enum class MessageType : char {
 
 ---
 
-### Trades!
+#### Trades!
 
 <pre>
 In function 'void handle(const MessageHeader&, ...
