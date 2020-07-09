@@ -71,3 +71,12 @@ void expensiveMistake() {
   sendOrder("GOOG", false, 1000.00, 100); 
 }
 </code></pre>
+
+---
+
+### But what about warnings?
+
+```
+$ gcc -c -Wall -Werror -Wextra expensive.cpp
+$
+```

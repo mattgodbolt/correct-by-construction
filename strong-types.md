@@ -105,7 +105,8 @@ public:
 Quantity thisDoesntSeemRight(-100);
 </code></pre>
 
-<pre>At least without `-Wsign-conversion` TODO talk about warnings</pre>
+<pre class=fragment>-Wsign-conversion</pre>
+
 
 ---
 
@@ -198,7 +199,6 @@ class Quantity {
 }
 </code></pre>
 
-TODO constexpr!!! conversation
 ---
 
 ### Quantity
@@ -267,3 +267,5 @@ void buyMoreGoogleShares() {
 * Constrain types
 * UDLs can be useful
 * Avoid naked `bool`s
+- Turn warnings on
+- Warnings as errors

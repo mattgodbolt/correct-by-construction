@@ -202,7 +202,6 @@ warning: enumeration value 'Trade'
  |          ^
 </pre>
 
-TODO: talk about Wall Wextra Werror etc? tradeoffs
 ---
 
 ## Summary
@@ -210,4 +209,5 @@ TODO: talk about Wall Wextra Werror etc? tradeoffs
 - Use enum classes for any choices
   - even sized ones
 - Avoid `if`, use no-`default` `switch`
+- Turn warnings on
 - Warnings as errors
