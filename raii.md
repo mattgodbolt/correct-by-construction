@@ -7,7 +7,7 @@
 
 ---
 
-#### Subscribers
+### Subscribers
 
 <pre><code class="cpp" data-line-numbers="|3-6|8-10" data-trim>
 class EventSource {
@@ -25,7 +25,7 @@ public:
 
 ---
 
-#### Subscriptions
+### Subscriptions
 
 <pre><code class="cpp" data-line-numbers="|6|9|11" data-trim>
 class EventSource::Subscription {
@@ -43,7 +43,7 @@ class EventSource::Subscription {
 
 ---
 
-#### Subscriptions
+### Subscriptions
 
 <pre><code class="cpp" data-line-numbers="|7-11" data-trim>
 class EventSource {
@@ -62,7 +62,7 @@ public:
 
 ---
 
-#### Summary
+### Summary
 
 - RAII/CADR is not just for resources
   - Recursion depth

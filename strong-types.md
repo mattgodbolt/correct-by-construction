@@ -1,10 +1,10 @@
 ## Strong Value Types
 
-TODO: Picture of an ant?
+![Picture of an ant](images/2048px-Leafcutter_ants.jpg)
 
 ---
 
-#### Better?
+### Better?
 
 <pre><code class="cpp" data-line-numbers="1-2|4-8|10-11" data-trim>
 using Price = double;
@@ -23,7 +23,7 @@ void expensiveMistake() {
 
 ---
 
-#### Better!
+### Better!
 
 <pre><code class="cpp" data-line-numbers data-trim>
 class Price {/*...*/};
@@ -37,7 +37,7 @@ void sendOrder(const char *symbol,
 
 ---
 
-#### Better!
+### Better!
 
 ```
 In function 'void expensiveMistake()':
@@ -53,7 +53,7 @@ error: could not convert 'Quantity(100)'
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers="|2|5-6|8" data-trim>
 class Quantity {
@@ -69,7 +69,7 @@ public:
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers data-trim>
 Quantity oneHundred(100);
@@ -81,7 +81,7 @@ Quantity thisDoesntSeemRight(-100);
 
 ---
 
-#### `int` -> `unsigned int`
+### `int` -> `unsigned int`
 
 <pre><code class="cpp" data-line-numbers="|2|5-6|8-9" data-trim>
 class Quantity {
@@ -98,7 +98,7 @@ public:
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers data-trim>
 // Still compiles just fine :(
@@ -109,7 +109,7 @@ Quantity thisDoesntSeemRight(-100);
 
 ---
 
-#### Quantity
+### Quantity
 
 
 <pre><code class="cpp" data-line-numbers data-trim>
@@ -131,7 +131,7 @@ explicit Quantity(T quantity)
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers data-trim>
 Quantity thisDoesntSeemRight(-100); 
@@ -152,7 +152,7 @@ note: the expression 'is_unsigned_v<&lt;> [with T = int]'
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers="1|2|3-4" data-trim>
 Quantity wouldBeNiceIfThisWorked(100);
@@ -163,7 +163,7 @@ Quantity whatAboutThis(
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers="|5-8" data-trim>
 class Quantity {
@@ -184,7 +184,7 @@ class Quantity {
 
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers data-trim>
 class Quantity {
@@ -201,7 +201,7 @@ class Quantity {
 TODO constexpr!!! conversation
 ---
 
-#### Quantity
+### Quantity
 
 <pre><code class="cpp" data-line-numbers="|1-4|6-9|11-14" data-trim>
 constexpr Quantity operator""_qty(
@@ -222,7 +222,7 @@ void sellMyGoogleShares() {
 
 ---
 
-#### Finishing touches
+### Finishing touches
 
 <pre><code class="cpp" data-line-numbers="|4" data-trim>
 void buyMoreGoogleShares() {
@@ -236,7 +236,7 @@ void buyMoreGoogleShares() {
 
 ---
 
-#### Finishing touches
+### Finishing touches
 
 <pre><code class="cpp" data-line-numbers="|1-3|8" data-trim>
 enum class BuyOrSell {

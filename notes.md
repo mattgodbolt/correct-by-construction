@@ -1,7 +1,7 @@
 
 ---
 
-#### Overview
+### Overview
 - Intro
   - C++ is powerful. Lots of choices
     - strong types
@@ -190,7 +190,7 @@ More thoughts:
 CppCast with Hana on C++20 talked about deprecating, making `bool` param from `const char *` etc bad
 Maybe look into and show this?
 
-#### principal of least surprise
+### principal of least surprise
 
 ...
 
@@ -242,7 +242,7 @@ New list:
   - https://godbolt.org/z/nMp3nI
 
 
-#### first run at home
+### first run at home
 - timings
   - 18m to "Performance"
   - 25m to "Market Data"

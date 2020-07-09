@@ -36,10 +36,16 @@
             padding: 15px !important;
         }
 
+        .reveal pre {
+            font-size: 0.7em;
+        }
         .reveal pre code {
             box-shadow: 10px 10px #888;
             border-radius: 10px;
             padding: 10px;
+            font-size: 125% !important;
+            line-height: 115%;
+            max-height: 600px !important;
         }
 
         .highlighted-already {
@@ -218,7 +224,7 @@
         </div>
         <div class="footer">
             &copy; <a href="https://twitter.com/mattgodbolt">Matt Godbolt</a> 2020
-            <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a><br>
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><br>
             Background images &copy; <a href="https://twitter.com/romainguy">Romain Guy</a>
             <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>
         </div>    
@@ -229,12 +235,14 @@
     <script src="reveal.js/plugin/highlight/highlight.js"></script>
 
     <script>
+        const ratio = 4 / 3;
+        const width = 1100;
         Reveal.initialize({
             history: true,
             transition: 'fade',
             slideNumber: true,
-            width: 850,
-            height: 540,
+            width: width,
+            height: width / ratio,
             plugins: [RevealMarkdown, RevealHighlight]
         });
     </script>
