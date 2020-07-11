@@ -323,6 +323,13 @@ constexpr std::byte operator"" _b(unsigned long long t) {
 
 doesn't throw on `auto x = 1000_b;` -- needs `constexpr`
 
+NO%^^^ NEEDS CONSTEVAL!! :D
+
+
+## What about performance!?
+
+[Let's see!](https://godbolt.org/z/Sn6k9-)
+
 
 .... ok!
 Run through Thursday: 56m no stopping.

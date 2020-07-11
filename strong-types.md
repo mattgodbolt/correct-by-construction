@@ -222,6 +222,44 @@ void sellMyGoogleShares() {
 
 ---
 
+### Quantity
+
+<pre><code class="cpp" data-line-numbers="|10|1" data-trim>
+constexpr Quantity operator""_qty(
+    unsigned long long value) {
+  return Quantity::from(value);
+}
+
+void myNineKeyIsStuck() {
+  sendOrder(
+    "GOOG", 
+    false,
+    9999999999_qty, 
+    1000_dollars);
+}
+</code></pre>
+
+---
+
+### Quantity
+
+<pre><code class="cpp" data-line-numbers="1" data-trim>
+consteval Quantity operator""_qty(
+    unsigned long long value) {
+  return Quantity::from(value);
+}
+</code></pre>
+
+<pre class=fragment>
+in 'constexpr' expansion of 'operator""_qty(9999999999)'
+in 'constexpr' expansion of 'Quantity::from<long long unsigned int>(value)'
+error: expression '<throw-expression>' is not a constant expression
+ |     throw std::runtime_error("Invalid quantity");
+ |     ^~~~~~
+</pre>
+
+---
+
 ### Finishing touches
 
 <pre><code class="cpp" data-line-numbers="|4" data-trim>
@@ -251,12 +289,6 @@ void buyMoreGoogleShares() {
     975_dollars);
 }
 </code></pre>
-
----
-
-## What about performance!?
-
-[Let's see!](https://godbolt.org/z/Sn6k9-)
 
 ---
 
