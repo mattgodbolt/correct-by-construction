@@ -141,7 +141,7 @@ public:
 ### Using the Mutator interface
 
 <pre><code class="cpp" data-line-numbers data-trim>
-void tinker(MyWidge t &widget) {
+void tinker(MyWidget &widget) {
   auto tinkerable = widget.get_tinkerable();
   tinkerable.tinker_with(123);
   tinkerable.tinker_with(333);

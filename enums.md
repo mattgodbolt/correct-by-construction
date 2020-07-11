@@ -157,11 +157,11 @@ static_assert(sizeof(MessageHeader) == 13);
 void handle(const MessageHeader &hdr, 
             const void *payload) {
   switch (hdr.type) {
-  case 'A': 
+  case MessageType::Add: 
     return handle&lt;AddMessage>(payload);
-  case 'M': 
+  case MessageType::Modify: 
     return handle&lt;ModifyMessage>(payload);
-  case 'D':
+  case MessageType::Delete:
     return handle&lt;DeleteMessage>(payload);
   }
   throw std::runtime_error(
