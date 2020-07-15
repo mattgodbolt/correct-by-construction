@@ -40,7 +40,7 @@
 
 <div>
 
-<blockquote><p>Code is a way you treat your coworkers.</p>&mdash; Michael Feathers (<a href="https://twitter.com/mfeathers">@mfeathers</a>) <a href="https://twitter.com/mfeathers/status/1276275603465887744?ref_src=twsrc%5Etfw">June 25, 2020</a></blockquote>
+<blockquote><p>Code is a way you treat your coworkers.</p>&mdash; Michael Feathers (<a href="https://twitter.com/mfeathers">@mfeathers</a>) <a href="https://twitter.com/mfeathers/status/1276275603465887744?ref_src=twsrc%5Etfw"><br>June 25, 2020</a></blockquote>
 
 </div>
 
