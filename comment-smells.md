@@ -317,7 +317,7 @@ CompiledShaders compile() {
   ShaderCompiler compiler;
   compiler.add("bob");
   compiler.add("dawn");
-  return compiler.compile();
+  return compiler.compile(); // sadly this does not work :'(
 }
 
 void use() {
